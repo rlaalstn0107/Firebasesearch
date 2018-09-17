@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String searchText = mSearchField.getText().toString();
+                String searchText = mSearchField.getText().toString();  //클릭했을떄 넘겨줄 text를 정한다.
 
                 firebaseUserSearch(searchText);
 
@@ -58,22 +58,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void firebaseUserSearch(String searchText) {
 
-        Toast.makeText(MainActivity.this, "Clicked button", Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, "Started Search", Toast.LENGTH_LONG).show();
 
         Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
 
-        FirebaseRecyclerAdapter<Users,UsersViewHolder>firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
+        FirebaseRecyclerAdapter<Users,UsersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
                 Users.class,
                 R.layout.list_layout,
                 UsersViewHolder.class,
-                mUserDatabase
+                firebaseSearchQuery
 
         ) {
             @Override
             protected void populateViewHolder(UsersViewHolder viewHolder, Users model, int position) {
-
                 viewHolder.setDetails(getApplicationContext(),model.getName(),model.getStatus(),model.getImage());
-
             }
         };
 
@@ -107,8 +105,5 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-
     }
-
-
 }
